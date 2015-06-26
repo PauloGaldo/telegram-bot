@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User {
+public class Contact {
 
-	private int id;
+	private String phone_number;
 
 	private String first_name;
 
 	private String last_name;
 
-	private String username;
+	private String user_id;
 
 }

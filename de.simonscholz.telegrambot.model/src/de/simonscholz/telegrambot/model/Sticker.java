@@ -6,14 +6,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User {
+public class Sticker {
 
-	private int id;
+	private String file_id;
 
-	private String first_name;
+	private Integer width;
 
-	private String last_name;
+	private Integer height;
 
-	private String username;
+	private PhotoSize thumb;
+
+	private Integer file_size;
 
 }

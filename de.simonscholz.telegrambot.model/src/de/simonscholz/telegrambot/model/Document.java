@@ -6,14 +6,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User {
+public class Document {
 
-	private int id;
+	private String file_id;
 
-	private String first_name;
+	private PhotoSize thumb;
 
-	private String last_name;
+	private String file_name;
 
-	private String username;
+	private String mime_type;
+
+	private Integer file_size;
 
 }

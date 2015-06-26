@@ -6,14 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User {
+public class Location {
 
-	private int id;
+	private Float longitude;
 
-	private String first_name;
-
-	private String last_name;
-
-	private String username;
-
+	private Float latitude;
 }
