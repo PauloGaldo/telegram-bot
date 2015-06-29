@@ -4,19 +4,19 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties("hello")
+@ConfigurationProperties("bot")
 public class BotProperties {
 
 	/**
-	 * Greeting message returned by the Hello Rest service.
+	 * Pssst.
 	 */
-	private String greeting = "Welcome ";
+	private String apiKey = "apikey";
 
-	public String getGreeting() {
-		return greeting;
+	public String getApiKey() {
+		return apiKey;
 	}
 
-	public void setGreeting(String greeting) {
-		this.greeting = greeting;
+	public void setApiKey(String greeting) {
+		this.apiKey = greeting;
 	}
 }

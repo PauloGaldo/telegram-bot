@@ -1,11 +1,7 @@
 package de.simonscholz.telegrambot.wheather.dmi;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-
-import javax.imageio.ImageIO;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,12 +9,9 @@ import org.jsoup.nodes.Element;
 
 public class ImageSearch {
 
-	public URL getImageUrl(String city) throws IOException {
+	public URL getTwoDaysForecastImageUrl(String city) throws IOException {
 
-		Document doc = Jsoup
-				.connect(
-						"http://www.dmi.dk/vejr/til-lands/byvejr/by/vis/DE/2911298/Hamburg,%20Tyskland/")
-				.get();
+		Document doc = navigateToCity(city);
 
 		Element twoDayImageElement = doc.getElementById("w_days_two_forecast");
 		String twoDayImageSrcAttrValue = twoDayImageElement.attr("src");
@@ -26,15 +19,23 @@ public class ImageSearch {
 		return new URL(twoDayImageSrcAttrValue);
 	}
 
-	public BufferedImage getBufferedImage(String city) throws IOException {
-		URL imageUrl = getImageUrl(city);
+	public URL getDaysThreeForecastImageUrl(String city) throws IOException {
 
-		return ImageIO.read(imageUrl);
+		Document doc = navigateToCity(city);
+
+		Element threeDayImageElement = doc
+				.getElementById("w_days_three_forecast");
+		String twoDayImageSrcAttrValue = threeDayImageElement.attr("src");
+
+		return new URL(twoDayImageSrcAttrValue);
 	}
 
-	public InputStream getInputStream(String city) throws IOException {
-		URL imageUrl = getImageUrl(city);
+	private Document navigateToCity(String city) throws IOException {
+		Document doc = Jsoup
+				.connect(
+						"http://www.dmi.dk/vejr/til-lands/byvejr/by/vis/DE/2911298/Hamburg,%20Tyskland/")
+				.get();
 
-		return imageUrl.openStream();
+		return doc;
 	}
 }

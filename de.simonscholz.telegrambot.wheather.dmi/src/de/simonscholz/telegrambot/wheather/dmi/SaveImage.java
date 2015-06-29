@@ -10,7 +10,7 @@ public class SaveImage {
 	public static void main(String[] args) {
 		try {
 			ImageSearch imageSearch = new ImageSearch();
-			URL url = imageSearch.getImageUrl("Hamburg");
+			URL url = imageSearch.getTwoDaysForecastImageUrl("Hamburg");
 			String fileName = url.getFile();
 
 			InputStream is = url.openStream();
