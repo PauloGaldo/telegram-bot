@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -44,17 +45,46 @@ public class BotController {
 		Methods methods = new Methods(props.getApiKey());
 		ImageSearch imageSearch = new ImageSearch();
 
+		DmiRest dmiRest = new DmiRest();
 		UpdateResponse updates = methods.getUpdates();
 
-		Update[] result = updates.getResult();
-		URL imageUrl = imageSearch.getTwoDaysForecastImageUrl("Hamburg");
-		for (Update update : result) {
-			Message message = update.getMessage();
-			String text = message.getText();
-			if ("".equalsIgnoreCase(text)) {
-			} else if ("/three".equalsIgnoreCase(text)) {
-				imageUrl = imageSearch.getDaysThreeForecastImageUrl("Hamburg");
+		URL imageUrl = null;
+
+		if (null == imageUrl) {
+			Update[] result = updates.getResult();
+			if (result.length > 0) {
+				for (Update update : result) {
+					Message message = update.getMessage();
+					String text = message.getText();
+					String[] split = text.split(" ");
+					if (split.length > 1) {
+						double findCityId = dmiRest.findCityId(URLEncoder
+								.encode(split[1], "UTF-8"));
+						if (findCityId > -1) {
+							if ("/now".equalsIgnoreCase(split[0].trim())) {
+								String twoDayURL = "http://servlet.dmi.dk/byvejr/servlet/world_image?city="
+										+ Double.valueOf(findCityId).intValue()
+										+ "&mode=dag1_2";
+								imageUrl = new URL(twoDayURL);
+							} else if ("/week"
+									.equalsIgnoreCase(split[0].trim())) {
+								String weekURL = "http://servlet.dmi.dk/byvejr/servlet/world_image?city="
+										+ Double.valueOf(findCityId).intValue()
+										+ "&mode=dag3_9";
+								imageUrl = new URL(weekURL);
+							}
+						}
+					}
+				}
 			}
+		}
+
+		if (null == imageUrl) {
+			Message message = new Message();
+			message.setText("command not found");
+			MessageResponse messageResponse = new MessageResponse();
+			messageResponse.setResult(message);
+			return messageResponse;
 		}
 
 		Path createTempFile = Files.createTempFile("", ".png",
