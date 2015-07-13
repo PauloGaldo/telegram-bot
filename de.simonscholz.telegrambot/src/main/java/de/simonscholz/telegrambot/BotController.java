@@ -2,6 +2,8 @@ package de.simonscholz.telegrambot;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.file.Files;
@@ -34,30 +36,7 @@ public class BotController {
 	@RequestMapping(method = RequestMethod.POST, value = "/dmi_weather")
 	public void dmiWeatherRequest(@RequestBody Update update)
 			throws IOException {
-		URL imageUrl = null;
-
-		if (null == imageUrl) {
-			Message message = update.getMessage();
-			String text = message.getText();
-			String[] split = text.split(" ");
-			if (split.length > 1) {
-				int findCityId = dmiRest.findCityId(URLEncoder.encode(split[1],
-						"UTF-8"));
-				if (findCityId > -1) {
-					if (Commands.TWO_DAY_WHEATHER.equalsIgnoreCase(split[0]
-							.trim())) {
-						String twoDayURL = "http://servlet.dmi.dk/byvejr/servlet/world_image?city="
-								+ findCityId + "&mode=dag1_2";
-						imageUrl = new URL(twoDayURL);
-					} else if (Commands.WEEK_WHEATHER.equalsIgnoreCase(split[0]
-							.trim())) {
-						String weekURL = "http://servlet.dmi.dk/byvejr/servlet/world_image?city="
-								+ findCityId + "&mode=dag3_9";
-						imageUrl = new URL(weekURL);
-					}
-				}
-			}
-		}
+		URL imageUrl = getImageUrl(update);
 
 		if (null == imageUrl) {
 			methods.sendMessage(update.getMessage().getChat().getId(),
@@ -70,6 +49,33 @@ public class BotController {
 		File file = createTempFile.toFile();
 		methods.sendPhoto(3130440, imageUrl, file, "DMI Wetter in Hamburg");
 		file.delete();
+	}
+
+	private URL getImageUrl(Update update) throws UnsupportedEncodingException,
+			MalformedURLException {
+		URL imageUrl = null;
+		Message message = update.getMessage();
+		String text = message.getText();
+		String[] dmiCommandSplit = text.split(" ");
+		if (dmiCommandSplit.length > 1) {
+			int findCityId = dmiRest.findCityId(URLEncoder.encode(dmiCommandSplit[1],
+					"UTF-8"));
+			if (findCityId > -1) {
+				if (Commands.TWO_DAY_WHEATHER.equalsIgnoreCase(dmiCommandSplit[0].trim())) {
+					imageUrl = getImageUrl(findCityId, "dag1_2");
+				} else if (Commands.WEEK_WHEATHER.equalsIgnoreCase(dmiCommandSplit[0]
+						.trim())) {
+					imageUrl = getImageUrl(findCityId, "dag3_9");
+				}
+			}
+		}
+		return imageUrl;
+	}
+
+	private URL getImageUrl(int cityId, String mode)
+			throws MalformedURLException {
+		return new URL("http://servlet.dmi.dk/byvejr/servlet/world_image?city="
+				+ cityId + "&mode=" + mode);
 	}
 
 	@RequestMapping("/sampleKeyboard")
