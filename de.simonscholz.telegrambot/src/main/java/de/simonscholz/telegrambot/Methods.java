@@ -7,11 +7,13 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -23,13 +25,16 @@ import de.simonscholz.telegrambot.model.response.MessageResponse;
 import de.simonscholz.telegrambot.model.response.UpdateResponse;
 import de.simonscholz.telegrambot.model.response.UserResponse;
 
+@Component
 public class Methods {
 
 	private String apiBaseUrl;
 	private RestTemplate restTemplate;
 
-	public Methods(String apiKey) {
-		apiBaseUrl = "https://api.telegram.org/bot" + apiKey + "/";
+	@Autowired
+	public Methods(BotProperties botProperties) {
+		apiBaseUrl = "https://api.telegram.org/bot" + botProperties.getApiKey()
+				+ "/";
 	}
 
 	protected RestTemplate getRestTemplate() {
