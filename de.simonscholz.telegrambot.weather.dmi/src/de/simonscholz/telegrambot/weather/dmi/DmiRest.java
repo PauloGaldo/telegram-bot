@@ -1,12 +1,14 @@
-package de.simonscholz.telegrambot;
+package de.simonscholz.telegrambot.weather.dmi;
 
 import java.net.URI;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+@Component
 public class DmiRest {
 
-	public double findCityId(String city) {
+	public int findCityId(String city) {
 		RestTemplate restTemplate = new RestTemplate();
 		URI cityQueryURI = URI
 				.create("http://www.dmi.dk/Data4DmiDk/getData?type=forecast&term="
@@ -18,6 +20,6 @@ public class DmiRest {
 			id = dmiModels[0].getId();
 		}
 
-		return id;
+		return Double.valueOf(id).intValue();
 	}
 }

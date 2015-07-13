@@ -1,4 +1,4 @@
-package de.simonscholz.telegrambot;
+package de.simonscholz.telegrambot.weather.dmi;
 
 import lombok.Data;
 
