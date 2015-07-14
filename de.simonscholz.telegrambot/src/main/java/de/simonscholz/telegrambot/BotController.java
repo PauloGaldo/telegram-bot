@@ -2,10 +2,7 @@ package de.simonscholz.telegrambot;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileAttribute;
@@ -18,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.simonscholz.telegrambot.internal.CommandImpl;
 import de.simonscholz.telegrambot.model.Message;
 import de.simonscholz.telegrambot.model.ReplyKeyboardMarkup;
 import de.simonscholz.telegrambot.model.Update;
 import de.simonscholz.telegrambot.model.response.UpdateResponse;
+import de.simonscholz.telegrambot.weather.dmi.DmiCityModel;
 import de.simonscholz.telegrambot.weather.dmi.DmiRest;
+import de.simonscholz.telegrambot.weather.dmi.WeatherImageMode;
 
 @RestController
 public class BotController {
@@ -34,48 +34,43 @@ public class BotController {
 	private DmiRest dmiRest;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/dmi_weather")
-	public void dmiWeatherRequest(@RequestBody Update update)
-			throws IOException {
-		URL imageUrl = getImageUrl(update);
+	public void dmiWeatherRequest(@RequestBody Update update) throws IOException {
 
-		if (null == imageUrl) {
+		Command command = getCommand(update);
+
+		WeatherImageMode imageType = WeatherImageMode.NOW;
+
+		if (Commands.WEEK_WHEATHER.equalsIgnoreCase(command.getCommand())) {
+			imageType = WeatherImageMode.WEEK;
+		}
+
+		DmiCityModel cityModel = dmiRest.findCityId(command.getArgs());
+		URL weatherImageURL = dmiRest.getWeatherImageURL(cityModel, imageType);
+
+		if (null == weatherImageURL) {
 			methods.sendMessage(update.getMessage().getChat().getId(),
-					"Please use /now or /week + cityname");
+					"Please use /now + cityname or /week + cityname");
 			return;
 		}
 
-		Path createTempFile = Files.createTempFile("", ".png",
-				new FileAttribute[0]);
+		Path createTempFile = Files.createTempFile("", ".png", new FileAttribute[0]);
 		File file = createTempFile.toFile();
-		methods.sendPhoto(3130440, imageUrl, file, "DMI Wetter in Hamburg");
+		methods.sendPhoto(update.getMessage().getChat().getId(), weatherImageURL, file,
+				"DMI weather in " + cityModel.getLabel());
 		file.delete();
 	}
 
-	private URL getImageUrl(Update update) throws UnsupportedEncodingException,
-			MalformedURLException {
-		URL imageUrl = null;
+	private Command getCommand(Update update) {
 		Message message = update.getMessage();
 		String text = message.getText();
 		String[] dmiCommandSplit = text.split(" ");
+		CommandImpl command = new CommandImpl();
+		command.setCommand(dmiCommandSplit[0]);
 		if (dmiCommandSplit.length > 1) {
-			int findCityId = dmiRest.findCityId(URLEncoder.encode(dmiCommandSplit[1],
-					"UTF-8"));
-			if (findCityId > -1) {
-				if (Commands.TWO_DAY_WHEATHER.equalsIgnoreCase(dmiCommandSplit[0].trim())) {
-					imageUrl = getImageUrl(findCityId, "dag1_2");
-				} else if (Commands.WEEK_WHEATHER.equalsIgnoreCase(dmiCommandSplit[0]
-						.trim())) {
-					imageUrl = getImageUrl(findCityId, "dag3_9");
-				}
-			}
+			command.setArgs(dmiCommandSplit[1]);
 		}
-		return imageUrl;
-	}
 
-	private URL getImageUrl(int cityId, String mode)
-			throws MalformedURLException {
-		return new URL("http://servlet.dmi.dk/byvejr/servlet/world_image?city="
-				+ cityId + "&mode=" + mode);
+		return command;
 	}
 
 	@RequestMapping("/sampleKeyboard")
@@ -98,7 +93,6 @@ public class BotController {
 		vars.add("text", "Hallo vom Spring BotController");
 		vars.add("reply_markup", buttons);
 
-		methods.sendMessage(3130440, "Hallo vom Spring BotController", false,
-				0, replyKeyboardMarkup);
+		methods.sendMessage(3130440, "Hallo vom Spring BotController", false, 0, replyKeyboardMarkup);
 	}
 }

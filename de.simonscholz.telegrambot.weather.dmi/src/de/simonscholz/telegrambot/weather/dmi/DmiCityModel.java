@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DmiModel {
+public class DmiCityModel {
 	private double id;
 
 	private double longitude;
