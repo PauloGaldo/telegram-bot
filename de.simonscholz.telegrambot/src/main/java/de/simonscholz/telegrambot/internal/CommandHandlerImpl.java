@@ -42,9 +42,10 @@ public class CommandHandlerImpl implements CommandHandler {
 	private void handleHelpCommand(Update update) {
 		methods.sendMessage(update.getMessage().getChat().getId(),
 				"You like the weather charts from the dmi.dk site?" + System.lineSeparator()
-						+ "The following commands can be used:" + System.lineSeparator() + System.lineSeparator()
-						+ "/now {desired cityname} - showing the two day weather" + System.lineSeparator()
-						+ "/week {desired cityname} - showing furhter weather of the week");
+						+ "This bot can show you the weather forecast graphs for your desired city."
+						+ System.lineSeparator() + "The following commands can be used:" + System.lineSeparator()
+						+ System.lineSeparator() + "/now cityname - showing the two day weather"
+						+ System.lineSeparator() + "/week cityname - showing furhter weather of the week");
 	}
 
 	private void handleWeatherCommand(Update update, Command command) throws MalformedURLException, IOException {

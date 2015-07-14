@@ -11,6 +11,10 @@ import org.springframework.web.client.RestTemplate;
 public class DmiRest {
 
 	public DmiCityModel findCityId(String city) {
+		if (null == city) {
+			return null;
+		}
+
 		RestTemplate restTemplate = new RestTemplate();
 		URI cityQueryURI = URI.create("http://www.dmi.dk/Data4DmiDk/getData?type=forecast&term=" + city);
 		DmiCityModel[] dmiModels = restTemplate.getForObject(cityQueryURI, DmiCityModel[].class);
