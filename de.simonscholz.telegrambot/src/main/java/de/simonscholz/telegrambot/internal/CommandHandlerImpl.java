@@ -45,7 +45,9 @@ public class CommandHandlerImpl implements CommandHandler {
 						+ "This bot can show you the weather forecast graphs for your desired city."
 						+ System.lineSeparator() + "The following commands can be used:" + System.lineSeparator()
 						+ System.lineSeparator() + "/now cityname - showing the two day weather"
-						+ System.lineSeparator() + "/week cityname - showing furhter weather of the week");
+						+ System.lineSeparator() + "/week cityname - showing furhter weather of the week"
+						+ System.lineSeparator() + System.lineSeparator()
+						+ "This bot project can be found at https://github.com/SimonScholz/telegram-bot");
 	}
 
 	private void handleWeatherCommand(Update update, Command command) throws MalformedURLException, IOException {
