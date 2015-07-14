@@ -33,8 +33,7 @@ public class Methods {
 
 	@Autowired
 	public Methods(BotProperties botProperties) {
-		apiBaseUrl = "https://api.telegram.org/bot" + botProperties.getApiKey()
-				+ "/";
+		apiBaseUrl = "https://api.telegram.org/bot" + botProperties.getApiKey() + "/";
 	}
 
 	protected RestTemplate getRestTemplate() {
@@ -57,43 +56,34 @@ public class Methods {
 	}
 
 	public UserResponse getMe() {
-		return getRestTemplate().getForObject(URI.create(apiBaseUrl + "getMe"),
-				UserResponse.class);
+		return getRestTemplate().getForObject(URI.create(apiBaseUrl + "getMe"), UserResponse.class);
 	}
 
 	public UpdateResponse getUpdates() {
-		return getRestTemplate().getForObject(getUpdatesURI(),
-				UpdateResponse.class);
+		return getRestTemplate().getForObject(getUpdatesURI(), UpdateResponse.class);
 	}
 
 	public MessageResponse sendMessage(int chat_id, String text) {
 		return sendMessageInternal(chat_id, text, false, 0, null);
 	}
 
-	public MessageResponse sendMessage(int chat_id, String text,
-			boolean disable_web_page_preview, int reply_to_message_id,
-			ReplyKeyboardMarkup reply_markup) {
-		return sendMessageInternal(chat_id, text, disable_web_page_preview,
-				reply_to_message_id, reply_markup);
+	public MessageResponse sendMessage(int chat_id, String text, boolean disable_web_page_preview,
+			int reply_to_message_id, ReplyKeyboardMarkup reply_markup) {
+		return sendMessageInternal(chat_id, text, disable_web_page_preview, reply_to_message_id, reply_markup);
 	}
 
-	public MessageResponse sendMessage(int chat_id, String text,
-			boolean disable_web_page_preview, int reply_to_message_id,
-			ReplyKeyboardHide reply_markup) {
-		return sendMessageInternal(chat_id, text, disable_web_page_preview,
-				reply_to_message_id, reply_markup);
+	public MessageResponse sendMessage(int chat_id, String text, boolean disable_web_page_preview,
+			int reply_to_message_id, ReplyKeyboardHide reply_markup) {
+		return sendMessageInternal(chat_id, text, disable_web_page_preview, reply_to_message_id, reply_markup);
 	}
 
-	public MessageResponse sendMessage(int chat_id, String text,
-			boolean disable_web_page_preview, int reply_to_message_id,
-			ForceReply reply_markup) {
-		return sendMessageInternal(chat_id, text, disable_web_page_preview,
-				reply_to_message_id, reply_markup);
+	public MessageResponse sendMessage(int chat_id, String text, boolean disable_web_page_preview,
+			int reply_to_message_id, ForceReply reply_markup) {
+		return sendMessageInternal(chat_id, text, disable_web_page_preview, reply_to_message_id, reply_markup);
 	}
 
-	private MessageResponse sendMessageInternal(int chat_id, String text,
-			boolean disable_web_page_preview, int reply_to_message_id,
-			Object reply_markup) {
+	private MessageResponse sendMessageInternal(int chat_id, String text, boolean disable_web_page_preview,
+			int reply_to_message_id, Object reply_markup) {
 		MultiValueMap<String, Object> data = new LinkedMultiValueMap<String, Object>();
 		data.add("chat_id", chat_id);
 		data.add("text", text);
@@ -105,47 +95,36 @@ public class Methods {
 			data.add("reply_markup", reply_markup);
 		}
 
-		return restTemplate.postForObject(getSendMessageURI(), data,
-				MessageResponse.class);
+		return getRestTemplate().postForObject(getSendMessageURI(), data, MessageResponse.class);
 	}
 
-	public MessageResponse sendPhoto(int chat_id, URL imageUrl, File tempFile)
-			throws IOException {
+	public MessageResponse sendPhoto(int chat_id, URL imageUrl, File tempFile) throws IOException {
 		return sendPhotoInternal(chat_id, imageUrl, tempFile, null, 0, null);
 	}
 
-	public MessageResponse sendPhoto(int chat_id, URL imageUrl, File tempFile,
-			String caption) throws IOException {
+	public MessageResponse sendPhoto(int chat_id, URL imageUrl, File tempFile, String caption) throws IOException {
 		return sendPhotoInternal(chat_id, imageUrl, tempFile, caption, 0, null);
 	}
 
-	public MessageResponse sendPhoto(int chat_id, URL imageUrl, File tempFile,
-			String caption, int reply_to_message_id,
+	public MessageResponse sendPhoto(int chat_id, URL imageUrl, File tempFile, String caption, int reply_to_message_id,
 			ReplyKeyboardMarkup reply_markup) throws IOException {
-		return sendPhotoInternal(chat_id, imageUrl, tempFile, caption,
-				reply_to_message_id, reply_markup);
+		return sendPhotoInternal(chat_id, imageUrl, tempFile, caption, reply_to_message_id, reply_markup);
 	}
 
-	public MessageResponse sendPhoto(int chat_id, URL imageUrl, File tempFile,
-			String caption, int reply_to_message_id,
+	public MessageResponse sendPhoto(int chat_id, URL imageUrl, File tempFile, String caption, int reply_to_message_id,
 			ReplyKeyboardHide reply_markup) throws IOException {
-		return sendPhotoInternal(chat_id, imageUrl, tempFile, caption,
-				reply_to_message_id, reply_markup);
+		return sendPhotoInternal(chat_id, imageUrl, tempFile, caption, reply_to_message_id, reply_markup);
 	}
 
-	public MessageResponse sendPhoto(int chat_id, URL imageUrl, File tempFile,
-			String caption, int reply_to_message_id, ForceReply reply_markup)
-			throws IOException {
-		return sendPhotoInternal(chat_id, imageUrl, tempFile, caption,
-				reply_to_message_id, reply_markup);
+	public MessageResponse sendPhoto(int chat_id, URL imageUrl, File tempFile, String caption, int reply_to_message_id,
+			ForceReply reply_markup) throws IOException {
+		return sendPhotoInternal(chat_id, imageUrl, tempFile, caption, reply_to_message_id, reply_markup);
 	}
 
-	private MessageResponse sendPhotoInternal(int chat_id, URL imageUrl,
-			File tempFile, String caption, int reply_to_message_id,
-			Object reply_markup) throws IOException {
+	private MessageResponse sendPhotoInternal(int chat_id, URL imageUrl, File tempFile, String caption,
+			int reply_to_message_id, Object reply_markup) throws IOException {
 
-		Files.copy(imageUrl.openStream(), tempFile.toPath(),
-				StandardCopyOption.REPLACE_EXISTING);
+		Files.copy(imageUrl.openStream(), tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
 		Resource photoResource = new FileSystemResource(tempFile);
 
@@ -164,8 +143,7 @@ public class Methods {
 		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 		HttpEntity<Object> request = new HttpEntity<Object>(data, headers);
 
-		return getRestTemplate().postForObject(getSendPhotoURI(), request,
-				MessageResponse.class);
+		return getRestTemplate().postForObject(getSendPhotoURI(), request, MessageResponse.class);
 	}
 
 }
