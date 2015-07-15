@@ -8,7 +8,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>de.simonscholz.telegrambot</name>
+	<name>Telegrambot with Spring Boot</name>
 	<description>Telegrambot with Spring Boot</description>
 
 	<parent>
@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>
 		<camel.version>2.15.2</camel.version>
-		
+
 		<start-class>Application</start-class>
 	</properties>
 
@@ -42,27 +42,21 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		
 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-core</artifactId>
-			<version>${camel.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-spring</artifactId>
-			<version>${camel.version}</version>
 		</dependency>
 
 		<dependency>
@@ -78,6 +72,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<version>2.6.11</version>
+		</dependency>
+
+
+		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
@@ -87,11 +88,6 @@
 			<artifactId>lombok</artifactId>
 			<version>1.16.2</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.github.peichhorn</groupId>
-			<artifactId>lombok-pg</artifactId>
-			<version>0.11.3</version>
 		</dependency>
 
 	</dependencies>

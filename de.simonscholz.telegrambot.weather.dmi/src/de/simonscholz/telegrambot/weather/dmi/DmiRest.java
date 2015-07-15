@@ -4,12 +4,14 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
 public class DmiRest {
 
+	@Cacheable("dmiCityModelRequest")
 	public DmiCityModel findCityId(String city) {
 		if (null == city) {
 			return null;

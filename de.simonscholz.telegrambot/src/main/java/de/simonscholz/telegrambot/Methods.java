@@ -124,6 +124,14 @@ public class Methods {
 	private MessageResponse sendPhotoInternal(int chat_id, URL imageUrl, File tempFile, String caption,
 			int reply_to_message_id, Object reply_markup) throws IOException {
 
+		HttpEntity<Object> request = createImageRequest(chat_id, imageUrl, tempFile, caption, reply_to_message_id,
+				reply_markup);
+
+		return getRestTemplate().postForObject(getSendPhotoURI(), request, MessageResponse.class);
+	}
+
+	private HttpEntity<Object> createImageRequest(int chat_id, URL imageUrl, File tempFile, String caption,
+			int reply_to_message_id, Object reply_markup) throws IOException {
 		Files.copy(imageUrl.openStream(), tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
 		Resource photoResource = new FileSystemResource(tempFile);
@@ -142,8 +150,7 @@ public class Methods {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 		HttpEntity<Object> request = new HttpEntity<Object>(data, headers);
-
-		return getRestTemplate().postForObject(getSendPhotoURI(), request, MessageResponse.class);
+		return request;
 	}
 
 }

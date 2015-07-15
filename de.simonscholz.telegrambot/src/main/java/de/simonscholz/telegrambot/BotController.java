@@ -11,12 +11,23 @@ import org.springframework.web.bind.annotation.RestController;
 import de.simonscholz.telegrambot.internal.CommandImpl;
 import de.simonscholz.telegrambot.model.Message;
 import de.simonscholz.telegrambot.model.Update;
+import de.simonscholz.telegrambot.weather.dmi.DmiCityModel;
+import de.simonscholz.telegrambot.weather.dmi.DmiRest;
 
 @RestController
 public class BotController {
 
 	@Autowired
 	private CommandHandler commandHandler;
+
+	@Autowired
+	private DmiRest dmiRest;
+
+	@RequestMapping("/test")
+	public void test() throws IOException {
+		DmiCityModel findCityId = dmiRest.findCityId("Hamburg");
+		System.out.println(findCityId.getLabel());
+	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/dmi_weather")
 	public void dmiWeatherRequest(@RequestBody Update update) throws IOException {
