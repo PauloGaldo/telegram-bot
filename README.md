@@ -4,7 +4,7 @@ This Telegram bot can be used to get the weather forecast graphs for your desire
 
 #How to use this bot
 
-This bot can be used by clicking on telegram.me/dmi_weather_bot or @dmi_weather_bot in your telegram app.
+This bot can be used by clicking on <b>telegram.me/dmi_weather_bot</b> or <b>@dmi_weather_bot</b> in your telegram app.
 After doing this you'll get a description of the bot and can directly start using it and send commands.
 
 More information concerning Telegram Bots can be found here: https://core.telegram.org/bots
