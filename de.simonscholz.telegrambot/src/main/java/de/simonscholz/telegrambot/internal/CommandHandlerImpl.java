@@ -31,15 +31,16 @@ public class CommandHandlerImpl implements CommandHandler {
 
 	@Override
 	public void handleCommand(Update update, Command command) throws MalformedURLException, IOException {
-		if (Commands.HELP.equalsIgnoreCase(command.getCommand())) {
-			handleHelpCommand(update);
-			return;
+		if (Commands.HELP.equalsIgnoreCase(command.getCommand())
+				|| Commands.START.equalsIgnoreCase(command.getCommand())) {
+			sendIntroductionMessage(update);
+		} else {
+			handleWeatherCommand(update, command);
 		}
 
-		handleWeatherCommand(update, command);
 	}
 
-	private void handleHelpCommand(Update update) {
+	private void sendIntroductionMessage(Update update) {
 		methods.sendMessage(update.getMessage().getChat().getId(),
 				"You like the weather charts from the dmi.dk site?" + System.lineSeparator()
 						+ "This bot can show you the weather forecast graphs for your desired city."
