@@ -39,11 +39,13 @@ public class BotController {
 	private Command getCommand(Update update) {
 		Message message = update.getMessage();
 		String text = message.getText();
-		String[] dmiCommandSplit = text.split(" ");
 		CommandImpl command = new CommandImpl();
-		command.setCommand(dmiCommandSplit[0]);
-		if (dmiCommandSplit.length > 1) {
-			command.setArgs(dmiCommandSplit[1]);
+		int commandIndex = text.indexOf(" ");
+		if (text.length() > commandIndex) {
+			command.setCommand(text.substring(0, commandIndex));
+			command.setArgs(text.substring(commandIndex + 1));
+		} else {
+			command.setCommand(text.trim());
 		}
 
 		return command;
