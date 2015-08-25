@@ -8,6 +8,9 @@
         <dependent-module archiveName="de.simonscholz.telegrambot.model-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/de.simonscholz.telegrambot.model/de.simonscholz.telegrambot.model">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="de.simonscholz.telegrambot.persistence-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/de.simonscholz.telegrambot.persistence/de.simonscholz.telegrambot.persistence">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="de.simonscholz.telegrambot.weather.dmi-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/de.simonscholz.telegrambot.weather.dmi/de.simonscholz.telegrambot.weather.dmi">
             <dependency-type>uses</dependency-type>
         </dependent-module>

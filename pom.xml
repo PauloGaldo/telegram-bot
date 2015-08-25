@@ -21,6 +21,7 @@
 	<modules>
 		<module>de.simonscholz.telegrambot</module>
 		<module>de.simonscholz.telegrambot.model</module>
+		<module>de.simonscholz.telegrambot.persistence</module>
 		<module>de.simonscholz.telegrambot.weather.dmi</module>
 	</modules>
 

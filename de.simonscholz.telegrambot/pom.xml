@@ -67,6 +67,12 @@
 
 		<dependency>
 			<groupId>de.simonscholz</groupId>
+			<artifactId>de.simonscholz.telegrambot.persistence</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>de.simonscholz</groupId>
 			<artifactId>de.simonscholz.telegrambot.weather.dmi</artifactId>
 			<version>0.0.1</version>
 		</dependency>
