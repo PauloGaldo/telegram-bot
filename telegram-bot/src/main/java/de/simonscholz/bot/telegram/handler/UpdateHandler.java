@@ -1,4 +1,4 @@
-package de.simonscholz.bot.telegram;
+package de.simonscholz.bot.telegram.handler;
 
 import com.pengrad.telegrambot.model.Update;
 

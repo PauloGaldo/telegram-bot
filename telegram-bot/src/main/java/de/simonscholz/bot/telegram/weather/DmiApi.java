@@ -1,4 +1,4 @@
-package de.simonscholz.bot.telegram;
+package de.simonscholz.bot.telegram.weather;
 
 import java.util.List;
 

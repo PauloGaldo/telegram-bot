@@ -1,4 +1,4 @@
-package de.simonscholz.bot.telegram;
+package de.simonscholz.bot.telegram.handler;
 
 import java.util.List;
 
@@ -15,6 +15,8 @@ import com.pengrad.telegrambot.request.SendPhoto;
 
 import de.simonscholz.bot.telegram.translate.Translation;
 import de.simonscholz.bot.telegram.translate.TranslationApi;
+import de.simonscholz.bot.telegram.weather.DmiApi;
+import de.simonscholz.bot.telegram.weather.DmiCity;
 import io.reactivex.Single;
 import okhttp3.ResponseBody;
 
@@ -45,22 +47,22 @@ public class UpdateHandlerImpl implements UpdateHandler {
 		int indexOf = text.indexOf(" ");
 
 		if (indexOf > -1) {
-			String city = text.substring(indexOf);
+			String queryString = text.substring(indexOf);
 
 			if (text.startsWith("/now")) {
-				Single<List<DmiCity>> dmiCities = dmiApi.getDmiCities(city.trim());
+				Single<List<DmiCity>> dmiCities = dmiApi.getDmiCities(queryString.trim());
 				sendDmiPhoto(chatId, dmiCities, DmiApi.MODE_NOW);
 			} else if (text.startsWith("/week")) {
-				Single<List<DmiCity>> dmiCities = dmiApi.getDmiCities(city.trim());
+				Single<List<DmiCity>> dmiCities = dmiApi.getDmiCities(queryString.trim());
 				sendDmiPhoto(chatId, dmiCities, DmiApi.MODE_WEEK);
 			} else if (text.startsWith("/de")) {
-				Single<Translation> translation = translationApi.getTranslation(city, "de", "en");
+				Single<Translation> translation = translationApi.getTranslation(queryString, "de", "en");
 				translation.subscribe(t -> {
 					SendMessage sendTranslation = new SendMessage(chatId, t.getTranslationText());
 					telegramBot.execute(sendTranslation);
 				});
 			} else if (text.startsWith("/en")) {
-				Single<Translation> translation = translationApi.getTranslation(city, "en", "de");
+				Single<Translation> translation = translationApi.getTranslation(queryString, "en", "de");
 				translation.subscribe(t -> {
 					SendMessage sendTranslation = new SendMessage(chatId, t.getTranslationText());
 					telegramBot.execute(sendTranslation);

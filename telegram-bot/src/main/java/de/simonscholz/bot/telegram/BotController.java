@@ -13,6 +13,8 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.GetUpdates;
 import com.pengrad.telegrambot.response.GetUpdatesResponse;
 
+import de.simonscholz.bot.telegram.handler.UpdateHandler;
+
 @RestController
 public class BotController {
 
@@ -22,8 +24,8 @@ public class BotController {
 	@Autowired
 	private TelegramBot bot;
 	
-	@RequestMapping("/test")
-	public void test() {
+	@RequestMapping("/poll")
+	public void poll() {
 
 		GetUpdates getUpdates = new GetUpdates().limit(100).offset(0).timeout(0);
 		GetUpdatesResponse getUpdatesResponse = bot.execute(getUpdates);
