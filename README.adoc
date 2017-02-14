@@ -1,0 +1,83 @@
+= Dmi Weather Telegram Bot
+
+This Telegram bot can be used to get the weather forecast graphs for your desired city from www.dmi.dk.
+
+== How to use this Telegram Bot
+
+This bot can be used by clicking on *telegram.me/dmi_weather_bot* or *@dmi_weather_bot* in your telegram app.
+After doing this you'll get a description of the bot and can directly start using it and send commands.
+
+More information concerning Telegram Bots can be found here: https://core.telegram.org/bots
+
+== Reasons for using this Telegram Bot
+
+Personally I really like the clearly represented weather forecast graphs, which are provided by www.dmi.dk, but on a mobile device they are not easy to reach with the browser and I am not pleased by current apps for this service.
+So by implementing this bot I got the chance to really get the raw graphs, which *saves* my *time*, system *resources* on my mobile device and *data volume* from my mobile provider. 
+
+== Tutorial
+
+=== Creating a new Telegram Bot
+
+In order to create a new bot you have to talk with @BotFather. There you can use several commands to create and configure your own bot.
+
+Sending `/help` to the @BotFather gives an overview about the commands.
+To create a new bot the `/newbot` command can be used.
+
+=== Configure the Application
+
+To run this Spring Boot application with your own bot you usually have to adjust the application.properties file. (https://github.com/SimonScholz/telegram-bot/blob/master/telegram-bot/src/main/resources/application.properties)
+
+[source, properties]
+----
+bot.api-key=97307424:AAEDj2IXFDEEYfQ6SY_Ma0W_CHu1mUmQ3h8
+server.port=8080
+----
+
+The _bot.api-key_ property has to be changed to your own bot token and you might want to change the _server.port_ property as well, e.g., to port 80.
+
+By sending the `/token` command to the @BotFather and selecting your bot, you'll get the token, which has to be placed in the _application.properties_ as _bot.api-key_ property value.
+
+=== Starting the Spring Boot application
+
+You can either import the project into the Spring Tool Suite (https://spring.io/tools/sts/all) and start it from the IDE or simply start the application by running the `bootRun` Gradle task.
+
+[source, console]
+----
+// unix
+telegram-bot > ./gradlew bootRun
+
+// win
+telegram-bot > gradlew.bat bootRun
+----
+
+=== Use the Application
+
+Once the application is running either from the IDE or with Gradle you can test it by navigating to http://localhost:8080/poll, which is used to poll your messages/commands.
+
+Currently 4 commands are supported:
+
+* /now {City name} - Get the current day overview image from dmi.dk
+* /week {City name} - Get the week overview image from dmi.dk
+
+* /en {german text} - translates german to english
+* /de {english text} - translates english to german
+
+When you send one of these commands to your bot and then open http://localhost:8080/poll the Spring Boot application will try to poll your commands and send appropriate answers to the chat with your bot.
+
+=== Using a Webhook
+
+Usually you'd want to use a webhook, if you're providing a rest endpoint like this app does.
+
+The webhook should point the /webhook endpoint, e.g., http://localhost:8080/webhook.
+
+NOTE: You'll have to substitute `http://localhost:8080/webhook` with `{your.server.domain}/webhook`, since the telegram bot won't be able to reach the localhost of your machine.
+
+TIP: See https://core.telegram.org/bots/api#setwebhook for further information about setting a webhook.
+
+== Questions
+
+Please make use of this bot, share your knowledge and adapt it for your needs. 
+
+== Contributing
+
+Feedback is highly appreciated. You may open issues, send pull requests or simply contact me.
