@@ -74,6 +74,16 @@ NOTE: You'll have to substitute `http://localhost:8080/webhook` with `{your.serv
 
 TIP: See https://core.telegram.org/bots/api#setwebhook for further information about setting a webhook.
 
+== Technologies
+
+* pengrad java telegram bot api
+* Spring Boot
+* Lombok
+* RxJava 2.x
+* Retrofit
+* Gradle
+* H2 Database
+
 == Questions
 
 Please make use of this bot, share your knowledge and adapt it for your needs. 
