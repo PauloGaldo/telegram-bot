@@ -31,11 +31,11 @@ public class BotController {
 		GetUpdatesResponse getUpdatesResponse = bot.execute(getUpdates);
 
 		List<Update> updates = getUpdatesResponse.updates();
-		updates.forEach(this::bot);
+		updates.forEach(this::webhook);
 	}
 
-	@RequestMapping(value = "/bot", method = RequestMethod.POST)
-	public void bot(@RequestBody Update update) {
+	@RequestMapping(value = "/webhook", method = RequestMethod.POST)
+	public void webhook(@RequestBody Update update) {
 		handler.handleUpdate(update);
 	}
 }
