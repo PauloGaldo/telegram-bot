@@ -31,7 +31,9 @@ public class BotController {
 		GetUpdatesResponse getUpdatesResponse = bot.execute(getUpdates);
 
 		List<Update> updates = getUpdatesResponse.updates();
-		updates.forEach(this::webhook);
+		for (Update update : updates) {
+			webhook(update);
+		}
 	}
 
 	@RequestMapping(value = "/webhook", method = RequestMethod.POST)

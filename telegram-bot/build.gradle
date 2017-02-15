@@ -11,15 +11,21 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
+apply plugin: 'war'
+apply plugin: 'eclipse-wtp'
 apply plugin: 'org.springframework.boot'
+
+war {
+	baseName = 'telegram-bot'
+	version = '0.0.1-SNAPSHOT'
+}
 
 jar {
 	baseName = 'telegram-bot'
 	version = '0.0.1-SNAPSHOT'
 }
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.7
 
 repositories {
 	jcenter()
@@ -30,17 +36,24 @@ repositories {
 
 
 dependencies {
+	compileOnly('org.projectlombok:lombok')
+
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-data-rest')
 	compile('org.springframework.boot:spring-boot-starter-hateoas')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	
+	compile('io.reactivex.rxjava2:rxjava:2.0.5')
+	compile('com.squareup.retrofit2:retrofit:+')
+	compile('com.squareup.retrofit2:adapter-rxjava2:+')
+	compile('com.squareup.retrofit2:converter-jackson:+')
+	compile('com.github.pengrad:java-telegram-bot-api:2.3.1.1')
+	compile('commons-io:commons-io:2.5')
+
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
+
 	runtime('com.h2database:h2')
-	compileOnly('org.projectlombok:lombok')
-	compile('io.reactivex.rxjava2:rxjava:2.0.5')
-	compile('com.squareup.retrofit2:retrofit:2.1.0')
-	compile('com.squareup.retrofit2:adapter-rxjava2:+')
-	compile('com.squareup.retrofit2:converter-jackson:2.1.0')
-	compile('com.github.pengrad:java-telegram-bot-api:2.3.1.1')
-	compile ('commons-io:commons-io:2.5')
+
+	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 }
