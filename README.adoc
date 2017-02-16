@@ -72,6 +72,13 @@ The webhook should point the /webhook endpoint, e.g., http://localhost:8080/webh
 
 NOTE: You'll have to substitute `http://localhost:8080/webhook` with `{your.server.domain}/webhook`, since the telegram bot won't be able to reach the localhost of your machine.
 
+A nice way to set the webhook is by using _curl_:
+
+[source, console]
+----
+curl https://api.telegram.org/bot{your api token}/setWebhook -F "url=https://{your-domain}/webhook"
+----
+
 TIP: See https://core.telegram.org/bots/api#setwebhook for further information about setting a webhook.
 
 == Technologies
